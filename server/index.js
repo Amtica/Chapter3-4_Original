@@ -1,4 +1,4 @@
-// server/index.js
+// index.js
 require('dotenv').config(); // load env early
 const express = require('express');
 const cors = require('cors');
@@ -6,7 +6,7 @@ const connectDB = require('./config/db');
 
 const app = express();
 
-// CORS - set allowed origin via CLIENT_URL env var
+// CORS - allow only the client origin in production via CLIENT_URL env var
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true
@@ -27,10 +27,6 @@ app.get('/api/health', (req, res) => {
 // Example:
 // const usersRouter = require('./routes/users');
 // app.use('/api/users', usersRouter);
-
-// Global error handler (ensure defined in middleware folder)
-const errorHandler = require('./middleware/errorHandler');
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
