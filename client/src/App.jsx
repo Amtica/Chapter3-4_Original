@@ -1,25 +1,20 @@
-import { Routes, Route } from "react-router-dom";
-
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Dashboard from "./components/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+import React, { useEffect, useState } from 'react';
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+  const [health, setHealth] = useState(null);
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL || ''}/api/health`, { credentials: 'include' })
+      .then(res => res.json())
+      .then(setHealth)
+      .catch(err => console.error(err));
+  }, []);
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>Chapter3-4 React Frontend</h1>
+      <pre>{health ? JSON.stringify(health, null, 2) : 'Checking server...'}</pre>
+    </div>
   );
 }
 
